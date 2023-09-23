@@ -1,0 +1,41 @@
+package com.swing;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+public class SwingHome{
+	
+	JTable table;
+	DefaultTableModel model;
+	
+	
+	public SwingHome() {
+		JFrame jf = new JFrame("Home Screen");
+		jf.setVisible(true);
+		jf.setSize(1080, 720);
+		jf.setLayout(null);
+		
+		
+		table.setModel(model);
+		
+		model.addColumn("name");
+		model.addColumn("contact");
+		model.addColumn("address");
+		model.addColumn("email");
+		model.addColumn("password");
+		model.addColumn("gender");
+		model.addColumn("password");
+		
+		
+		JScrollPane sp = new JScrollPane(table); 
+		jf.getContentPane().add(sp);
+		jf.setVisible(true);
+		
+	}
+	
+	public static void fetchdata(DefaultTableModel model) {
+		
+	}
+}

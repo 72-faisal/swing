@@ -1,0 +1,73 @@
+// SwingHome.java
+package com.swing;
+
+import javax.swing.*;
+import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class SwingHome extends JFrame {
+
+    private JLabel nameLabel;
+    private JLabel contactLabel;
+    private JLabel addressLabel;
+    private JLabel genderLabel;
+    private JLabel hobbiesLabel;
+
+    public SwingHome(ResultSet userData) throws SQLException {
+        // Set up the home screen window
+        setTitle("Home");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new GridLayout(6, 2));
+
+        nameLabel = new JLabel("Name:");
+        add(nameLabel);
+        add(new JLabel(userData.getString("name")));
+
+        contactLabel = new JLabel("Contact:");
+        add(contactLabel);
+        add(new JLabel(userData.getString("contact")));
+
+        addressLabel = new JLabel("Address:");
+        add(addressLabel);
+        add(new JLabel(userData.getString("address")));
+
+        genderLabel = new JLabel("Gender:");
+        add(genderLabel);
+        add(new JLabel(userData.getString("gender")));
+
+        hobbiesLabel = new JLabel("Hobbies:");
+        add(hobbiesLabel);
+        add(new JLabel(userData.getString("hobbies")));
+
+        setLocationRelativeTo(null); // Center the window
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        // Example usage
+        SwingUtilities.invokeLater(() -> {
+            // Fetch user data from the database and pass it to SwingHome
+            try {
+                Connection con = SwingTask.getconnection();
+                String sql = "SELECT * FROM data WHERE email=? AND password=?";
+                PreparedStatement pst = con.prepareStatement(sql);
+                pst.setString(1, "user@example.com"); // Replace with the user's email
+                pst.setString(2, "password123");    // Replace with the user's password
+                ResultSet rs = pst.executeQuery();
+                
+                if (rs.next()) {
+                    new SwingHome(rs);
+                    System.out.println("Login successful");
+                } else {
+                    System.out.println("Login failed. Invalid email or password.");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+}

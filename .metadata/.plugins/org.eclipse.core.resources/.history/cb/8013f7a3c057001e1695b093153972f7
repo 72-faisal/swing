@@ -1,0 +1,238 @@
+package com.swing;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+
+public class SwingHome {
+	
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Dynamic Table Example");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 400);
+
+        // Create a list to store dynamic data
+        List<Person> personList = new ArrayList<>();
+
+        // Create a custom table model to display the data
+        CustomTableModel tableModel = new CustomTableModel(personList);
+
+        // Create a JTable with the custom table model
+        JTable table = new JTable((TableModel) tableModel);
+
+        // Create input fields and buttons
+        JTextField nameField = new JTextField(20);
+        JTextField contactField = new JTextField(10);
+        JTextField addressField = new JTextField(30);
+        JTextField emailField = new JTextField(30);
+        JPasswordField passwordField = new JPasswordField(20);
+        JRadioButton maleRadioButton = new JRadioButton("Male");
+        JRadioButton femaleRadioButton = new JRadioButton("Female");
+        JCheckBox sportsCheckBox = new JCheckBox("Sports");
+        JCheckBox travellingCheckBox = new JCheckBox("Travelling");
+        JCheckBox photographyCheckBox = new JCheckBox("Photography");
+        JButton addButton = new JButton("Add Person");
+
+        // Add an action listener to the "Add Person" button
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Get data from input fields
+                String name = nameField.getText();
+                String contact = contactField.getText();
+                String address = addressField.getText();
+                String email = emailField.getText();
+                String password = new String(passwordField.getPassword());
+                String gender = maleRadioButton.isSelected() ? "Male" : "Female";
+
+                // Create a string to store selected hobbies
+                StringBuilder hobbies = new StringBuilder();
+                if (sportsCheckBox.isSelected()) {
+                    hobbies.append("Sports, ");
+                }
+                if (travellingCheckBox.isSelected()) {
+                    hobbies.append("Travelling, ");
+                }
+                if (photographyCheckBox.isSelected()) {
+                    hobbies.append("Photography");
+                }
+
+                // Remove trailing comma and space if any
+                if (hobbies.length() > 0 && hobbies.charAt(hobbies.length() - 1) == ' ') {
+                    hobbies.delete(hobbies.length() - 2, hobbies.length());
+                }
+
+                // Add a new Person object to the list
+                personList.add(new Person(name, contact, address, email, password, gender, hobbies.toString()));
+
+                // Notify the table model that the data has changed
+                tableModel.fireTableDataChanged();
+
+                // Clear input fields and selections
+                nameField.setText("");
+                contactField.setText("");
+                addressField.setText("");
+                emailField.setText("");
+                passwordField.setText("");
+                maleRadioButton.setSelected(false);
+                femaleRadioButton.setSelected(false);
+                sportsCheckBox.setSelected(false);
+                travellingCheckBox.setSelected(false);
+                photographyCheckBox.setSelected(false);
+            }
+        });
+
+        // Create panels to organize input fields and buttons
+        JPanel inputPanel = new JPanel(new GridLayout(7, 2, 10, 5));
+        inputPanel.add(new JLabel("Name:"));
+        inputPanel.add(nameField);
+        inputPanel.add(new JLabel("Contact:"));
+        inputPanel.add(contactField);
+        inputPanel.add(new JLabel("Address:"));
+        inputPanel.add(addressField);
+        inputPanel.add(new JLabel("Email:"));
+        inputPanel.add(emailField);
+        inputPanel.add(new JLabel("Password:"));
+        inputPanel.add(passwordField);
+        inputPanel.add(new JLabel("Gender:"));
+        inputPanel.add(maleRadioButton);
+        inputPanel.add(new JLabel("Hobbies:"));
+        inputPanel.add(femaleRadioButton);
+        inputPanel.add(sportsCheckBox);
+        inputPanel.add(new JLabel(""));
+        inputPanel.add(travellingCheckBox);
+        inputPanel.add(new JLabel(""));
+        inputPanel.add(photographyCheckBox);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(addButton);
+
+        // Add components to the frame
+        frame.getContentPane().setLayout(new BorderLayout());
+        frame.getContentPane().add(inputPanel, BorderLayout.NORTH);
+        frame.getContentPane().add(new JScrollPane(table), BorderLayout.CENTER);
+        frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+
+        frame.setVisible(true);
+    }
+
+    // Define a custom table model
+    static class CustomTableModel extends AbstractTableModel {
+        private List<Person> data;
+        private String[] columnNames = {"Name", "Contact", "Address", "Email", "Gender", "Hobbies"};
+
+        public CustomTableModel(List<Person> data) {
+            this.data = data;
+        }
+
+        public void fireTableDataChanged() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+        public int getRowCount() {
+            return data.size();
+        }
+
+        @Override
+        public int getColumnCount() {
+            return columnNames.length;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            Person person = data.get(rowIndex);
+            switch (columnIndex) {
+                case 0:
+                    return person.getName();
+                case 1:
+                    return person.getContact();
+                case 2:
+                    return person.getAddress();
+                case 3:
+                    return person.getEmail();
+                case 4:
+                    return person.getGender();
+                case 5:
+                    return person.getHobbies();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public String getColumnName(int columnIndex) {
+            return columnNames[columnIndex];
+        }
+    }
+
+    // Define a Person class to represent the data
+    static class Person {
+        private String name;
+        private String contact;
+        private String address;
+        private String email;
+        private String password;
+        private String gender;
+        private String hobbies;
+
+        public Person(String name, String contact, String address, String email, String password, String gender, String hobbies) {
+            this.name = name;
+            this.contact = contact;
+            this.address = address;
+            this.email = email;
+            this.password = password;
+            this.gender = gender;
+            this.hobbies = hobbies;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getContact() {
+            return contact;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public String getGender() {
+            return gender;
+        }
+
+        public String getHobbies() {
+            return hobbies;
+        }
+    }
+
+	
+}

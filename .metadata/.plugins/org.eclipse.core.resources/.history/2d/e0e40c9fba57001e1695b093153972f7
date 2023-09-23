@@ -1,0 +1,10 @@
+/**
+ * 
+ */
+/**
+ * @author vhora
+ *
+ */
+module Preparation {
+	requires java.desktop;
+}

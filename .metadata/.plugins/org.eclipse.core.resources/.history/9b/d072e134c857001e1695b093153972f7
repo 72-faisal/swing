@@ -1,0 +1,133 @@
+package com.swing;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+
+import javax.swing.JTextArea;
+
+
+public class SwingHome implements ActionListener{
+	JLabel l1, l2, l3, l4, l5, l6, l7;
+	JTextArea t1, t2, t3, t4, t5,t6,t7;
+	JButton b1;
+	
+	
+	
+	
+	public SwingHome() {
+		JFrame jf = new JFrame("Home Screen");
+		jf.setVisible(true);
+		jf.setSize(1080, 720);
+		jf.setLayout(null);
+		
+		l1 = new JLabel("Name");
+		l1.setBounds(200, 200, 200, 20);
+		jf.add(l1);
+
+		t1 = new JTextArea();
+		t1.setBounds(280, 200, 200, 20);
+		jf.add(t1);
+
+		l2 = new JLabel("Contact");
+		l2.setBounds(200, 250, 200, 20);
+		jf.add(l2);
+
+		t2 = new JTextArea();
+		t2.setBounds(280, 250, 200, 20);
+		jf.add(t2);
+
+		l3 = new JLabel("Address");
+		l3.setBounds(200, 300, 200, 20);
+		jf.add(l3);
+
+		t3 = new JTextArea();
+		t3.setBounds(280, 300, 200, 20);
+		jf.add(t3);
+
+		l4 = new JLabel("Email");
+		l4.setBounds(200, 350, 200, 20);
+		jf.add(l4);
+
+		t4 = new JTextArea();
+		t4.setBounds(280, 350, 200, 20);
+		jf.add(t4);
+
+		l5 = new JLabel("Password");
+		l5.setBounds(200, 400, 200, 20);
+		jf.add(l5);
+		
+		t5 = new JTextArea();
+		t5.setBounds(280, 400, 200, 20);
+		jf.add(t5);
+
+		l6 = new JLabel("Gender");
+		l6.setBounds(200, 450, 200, 20);
+		jf.add(l6);
+		
+		t6 = new JTextArea();
+		t6.setBounds(280, 450, 200, 20);
+		jf.add(t6);
+		
+		l7 = new JLabel("Hobbies");
+		l7.setBounds(200, 500, 200, 20);
+		jf.add(l7);
+		
+		t5 = new JTextArea();
+		t5.setBounds(280, 500, 200, 20);
+		jf.add(t5);
+		
+		b1 = new JButton("show the details");
+		b1.setBounds(320, 550, 100, 40);
+		jf.add(b1);
+		
+		b1.addActionListener(this);
+		
+	}
+	public static void main(String[] args) {
+		new SwingHome();
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if(e.getSource()==b1) {
+			System.out.println("search button clicked");
+			String name = t1.getText();
+			try {
+				Connection con = SwingTask.getconnection();
+				String sql = "select * from data where id=?";
+				PreparedStatement pst = con.prepareStatement(sql);
+				pst.setInt(1, id);
+				ResultSet rs = pst.executeQuery();
+				if (rs.next()) {
+					t1.setText(String.valueOf(rs.getInt("id")));
+					t2.setText(rs.getString("name"));
+					t3.setText(String.valueOf(rs.getLong("contact")));
+					t4.setText(rs.getString("address"));
+					t5.setText(rs.getString("email"));
+				} else {
+					System.out.println("data not found");
+					t1.setText("");
+					t2.setText("");
+					t3.setText("");
+					t4.setText("");
+					t5.setText("");
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			
+		}
+		
+	}
+	
+	
+}

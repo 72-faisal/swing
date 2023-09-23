@@ -1,0 +1,19 @@
+package com.swing;
+
+import javax.swing.JFrame;
+
+public class SwingHome {
+	
+	public SwingHome() {
+	JFrame fj = new JFrame("Login");
+	fj.setVisible(true);
+	fj.setSize(600, 400);
+	fj.setLayout(null);
+
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

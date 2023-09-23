@@ -1,0 +1,109 @@
+package com.swing;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableModel;
+
+public class SwingHome{
+	JLabel l1, l2, l3, l4, l5, l6, l7;
+	JTextArea t1, t2, t3, t4, t5;
+	JRadioButton r1, r2;
+	JCheckBox c1, c2, c3;
+	JButton b1, rb1, cb1;
+	
+	
+	
+	public SwingHome() {
+		JFrame jf = new JFrame("Home Screen");
+		jf.setVisible(true);
+		jf.setSize(1080, 720);
+		jf.setLayout(null);
+		
+		l1 = new JLabel("Name");
+		l1.setBounds(200, 200, 200, 20);
+		fr.add(l1);
+
+		t1 = new JTextArea();
+		t1.setBounds(280, 200, 200, 20);
+		fr.add(t1);
+
+		l2 = new JLabel("Contact");
+		l2.setBounds(200, 250, 200, 20);
+		fr.add(l2);
+
+		t2 = new JTextArea();
+		t2.setBounds(280, 250, 200, 20);
+		fr.add(t2);
+
+		l3 = new JLabel("Address");
+		l3.setBounds(200, 300, 200, 20);
+		fr.add(l3);
+
+		t3 = new JTextArea();
+		t3.setBounds(280, 300, 200, 20);
+		fr.add(t3);
+
+		l4 = new JLabel("Email");
+		l4.setBounds(200, 350, 200, 20);
+		fr.add(l4);
+
+		t4 = new JTextArea();
+		t4.setBounds(280, 350, 200, 20);
+		fr.add(t4);
+
+		l5 = new JLabel("Password");
+		l5.setBounds(200, 400, 200, 20);
+		fr.add(l5);
+
+		t5 = new JTextArea();
+		t5.setBounds(280, 400, 200, 20);
+		fr.add(t5);
+
+		l6 = new JLabel("Gender");
+		l6.setBounds(200, 450, 200, 20);
+		fr.add(l6);
+		
+	}
+	public static void main(String[] args) {
+		new SwingHome();
+	}
+	
+	public static void getconnection(DefaultTableModel model) {
+		 
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/swingframe1", "root", "");
+			String sql = "select  name,contact,address,email,password,gender,hobbies from data";
+			PreparedStatement pst = con.prepareStatement(sql);
+			ResultSet rs= pst.executeQuery(sql);
+			while(rs.next()) {
+				String name= rs.getString("name");
+				long contact= rs.getLong("contact");
+				String address= rs.getString("address");
+				String email= rs.getString("email");
+				String password= rs.getString("password");
+				String gender= rs.getString("gender");
+				String hobbies= rs.getString("hobbies");
+				
+				model.addRow(new Object[] {name,contact,address,email,password,gender,hobbies});
+				
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+
+	}
+}

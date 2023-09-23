@@ -1,0 +1,328 @@
+package swing;
+
+
+
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.util.Collection;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
+class Login implements ActionListener{
+	
+	JLabel l1,l2;
+	JTextArea t1,t2;
+	JButton b1;
+	
+	public Login() {
+		JFrame fr = new JFrame("Login");
+		fr.setVisible(true);
+		fr.setSize(600, 400);
+		fr.setLayout(null);
+		
+		
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+}
+class Register implements ActionListener{ 
+	
+	JLabel l1,l2,l3,l4,l5,l6,l7;
+	JTextArea t1,t2,t3,t4,t5;
+	JRadioButton r1,r2;
+	JCheckBox c1,c2,c3;
+	JButton b1,rb1,cb1;
+	
+	
+	public Register() {
+		JFrame fr = new JFrame("Register");
+		fr.setVisible(true);
+		fr.setSize(600, 400);
+		fr.setLayout(null);
+		
+		l1= new JLabel("Name");
+		l1.setBounds(200, 200, 200, 30);
+		fr.add(l1);
+		
+		t1= new JTextArea();
+		t1.setBounds(280, 200, 200, 30);
+		fr.add(t1);
+		
+		l2= new JLabel("Contact");
+		l2.setBounds(200, 250, 200, 30);
+		fr.add(l2);
+		
+		t2= new JTextArea();
+		t2.setBounds(280, 250, 200, 30);
+		fr.add(t2);
+		
+		l3 = new JLabel("Address");
+		l3.setBounds(200,300, 200, 30);
+		fr.add(l3);
+		
+		t3 = new JTextArea();
+		t3.setBounds(280, 300, 200, 30);
+		fr.add(t3);
+		
+		l4 = new JLabel("Email");
+		l4.setBounds(200, 350, 200, 30);
+		fr.add(l4);
+		
+		t4 = new JTextArea();
+		t4.setBounds(280, 350, 200, 30);
+		fr.add(t4);
+		
+		l5 = new JLabel("Password");
+		l5.setBounds(200, 400, 200, 30);
+		fr.add(l5);
+		
+		t5 = new JTextArea();
+		t5.setBounds(280, 400, 200, 30);
+		fr.add(t5);
+		
+		l6= new JLabel("Gender");
+		l6.setBounds(200,450, 200, 20);
+		fr.add(l6);
+		
+		r1 = new JRadioButton("Male");
+		r1.setBounds(280, 450, 60, 20);
+		fr.add(r1);
+		
+		r2 = new JRadioButton("Female");
+		r2.setBounds(340, 450, 100, 20);
+		fr.add(r2);
+		
+		l7= new JLabel("Hobbies");
+		l7.setBounds(200, 500, 200, 20);
+		fr.add(l7);
+		
+		c1 = new JCheckBox("Sports");
+		c1.setBounds(280, 500, 100, 20);
+		fr.add(c1);
+		
+		c2 = new JCheckBox("Travelling");
+		c2.setBounds(380, 500, 100, 20);
+		fr.add(c2);
+		
+		c3 = new JCheckBox("Photography");
+		c3.setBounds(480, 500, 100, 20);
+		fr.add(c3);
+		
+		b1= new JButton("Register");
+		b1.setBounds(300, 570, 100, 40);
+		fr.add(b1);
+		
+		
+		
+		
+		
+		ButtonGroup bg = new ButtonGroup();
+		bg.add(r1);
+		bg.add(r2);
+		
+		rb1= new JButton("radio value");
+		fr.add(rb1);
+		
+		
+		ButtonGroup bg1= new ButtonGroup();
+		bg.add(c1);
+		bg.add(c2);
+		bg.add(c3);
+		
+		cb1= new JButton("box value");
+		fr.add(cb1);
+		
+		
+		b1.addActionListener(this);
+		rb1.addActionListener(this);
+		cb1.addActionListener(this);
+		
+		}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if (e.getSource()== b1) {
+			String name = t1.getText();
+			long contact = Long.parseLong(t2.getText());
+			String address = t3.getText();
+			String email = t4.getText();
+			String password = t5.getText();
+//			String gender=rb1.getActionCommand();
+//			String hobbies= cb1.getActionCommand();
+		
+			System.out.println("name : " + name);
+			System.out.println("contact : " + contact);
+			System.out.println("address: " + address);
+			System.out.println("email : " + email);
+			System.out.println("password : " + password);
+//			System.out.println("gender : " + gender);
+//			System.out.println("hobbies : " + hobbies);
+			
+			
+			try {
+				Connection con = Swing_Task_frame1.getconnection();
+				String sql = "insert into data(name,contact,address,email,password) values(?,?,?,?,?)";
+				PreparedStatement pst = con.prepareStatement(sql);
+				pst.setString(1, name);
+				pst.setLong(2, contact);
+				pst.setString(3, address);
+				pst.setString(4, email);
+				pst.setString(5, password);
+//				pst.setString(6, gender);
+//				pst.setString(7, hobbies);
+				
+				
+				
+				
+//				DML->insert,update,delete (executeUpdate)
+//				DQL->select (executeQuery)
+				pst.executeUpdate();
+				System.out.println("data inserted");
+				t1.setText("");
+				t2.setText("");
+				t3.setText("");
+				t4.setText("");
+				t5.setText("");
+			
+				
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			
+		}
+		else if (e.getActionCommand().equals("radio value")) {
+		
+			String gender = "";
+            if (r1.isSelected()) {
+                gender = "Male";
+            } else if (r2.isSelected()) {
+                gender = "Female";
+            }
+            System.out.println("gender : " + gender);
+            try {
+            	Connection con = Swing_Task_frame1.getconnection();
+				String sql = "insert into data(gender) values(?)";
+				PreparedStatement pst = con.prepareStatement(sql);
+				pst.setString(6,gender);
+				pst.executeUpdate();
+            	
+				
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			
+		}
+		else if(e.getActionCommand().equals("box value")) {
+			String hobbies = "";
+            if (c1.isSelected()) {
+                hobbies = "Sports";
+            } else if (c2.isSelected()) {
+                hobbies = "Travelling";
+            } else if(c3.isSelected()) {
+            	hobbies = "Photography";
+            }
+            System.out.println("hobbies : " + hobbies);
+			  try { Connection con = Swing_Task_frame1.getconnection();
+			  String sql = "insert into data(hobbies) values(?)";
+			  PreparedStatement pst = con.prepareStatement(sql);
+			  pst.setString(7,hobbies); 
+			  pst.executeUpdate();
+			  
+			  
+			  
+			  } catch (Exception e2) {
+				 e2.printStackTrace(); 
+			  }
+			 
+		}
+		
+		
+	}
+}
+
+
+public class Swing_Task_frame1 implements ActionListener {
+	
+	JButton  b1,b2;
+	
+	
+	public Swing_Task_frame1() {
+		
+		JFrame jf= new  JFrame("First Screen");
+		jf.setVisible(true);
+		jf.setSize(1080, 720);
+		jf.setLayout(null);
+		
+		
+		b1 = new JButton("Register");
+		b1.setBounds(500, 300, 100, 50);
+		jf.add(b1);
+
+		b2 = new JButton("Login");
+		b2.setBounds(500, 400, 100, 50);
+		jf.add(b2);
+		
+		b1.addActionListener(this);
+		b2.addActionListener(this);
+		
+		
+	}
+
+public static void main(String[] args)  {
+		
+		new Swing_Task_frame1();
+
+		
+	}
+
+public static Connection getconnection() {
+	Connection con= null;
+	try {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		con=DriverManager.getConnection("jdbc:mysql://localhost:3306/swingframe1","root","");
+	} catch (Exception e) {
+		e.printStackTrace();
+		// TODO: handle exception
+	}
+	return con;
+	
+	
+}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+		if(e.getSource()==b1) {
+			new Register();
+		}
+		
+		if(e.getSource()==b2) {
+			new Login();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+
+}

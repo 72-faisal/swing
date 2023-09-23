@@ -1,0 +1,10 @@
+/**
+ * 
+ */
+/**
+ * @author vhora
+ *
+ */
+module Swing_Task {
+	requires java.desktop;
+}

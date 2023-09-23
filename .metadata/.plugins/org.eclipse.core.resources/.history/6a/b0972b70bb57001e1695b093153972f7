@@ -1,0 +1,9 @@
+package com.swing;
+
+public class SwingLogin {
+	
+	public static void main(String[] args) {
+		
+	}
+
+}

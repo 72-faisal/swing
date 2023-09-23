@@ -1,0 +1,18 @@
+package com.swing;
+
+import javax.swing.JFrame;
+
+public class SwingHome{
+	
+	
+	public SwingHome() {
+		JFrame jf = new JFrame("Home Screen");
+		jf.setVisible(true);
+		jf.setSize(1080, 720);
+		jf.setLayout(null);
+	}
+	
+	public static void main(String[] args) {
+		
+	}
+}

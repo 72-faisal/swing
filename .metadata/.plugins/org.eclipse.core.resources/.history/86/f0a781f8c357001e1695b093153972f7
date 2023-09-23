@@ -1,0 +1,75 @@
+package com.swing;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+public class SwingHome{
+	
+	JTable table;
+	DefaultTableModel model;
+	
+	
+	public SwingHome() {
+		JFrame jf = new JFrame("Home Screen");
+		jf.setVisible(true);
+		jf.setSize(1080, 720);
+		jf.setLayout(null);
+		
+		
+		table.setModel(model);
+		
+		model.addColumn("name");
+		model.addColumn("contact");
+		model.addColumn("address");
+		model.addColumn("email");
+		model.addColumn("password");
+		model.addColumn("gender");
+		model.addColumn("hobbies");
+		
+		
+		JScrollPane sp = new JScrollPane(table); 
+		jf.getContentPane().add(sp);
+		jf.setVisible(true);
+		
+	}
+	public static void main(String[] args) {
+		
+	}
+	
+	public static Connection getconnection(DefaultTableModel model) {
+		Connection con = null;
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/swingframe1", "root", "");
+			String sql = "select  name,contact,address,email,password,gender,hobbies from data";
+			PreparedStatement pst = con.prepareStatement(sql);
+			ResultSet rs= pst.executeQuery(sql);
+			while(rs.next()) {
+				String name= rs.getString("name");
+				Long contact= rs.getLong("contact");
+				String address= rs.getString("address");
+				String email= rs.getString("email");
+				String password= rs.getString("password");
+				String gender= rs.getString("gender");
+				String hobbies= rs.getString("hobbies");
+				
+				model.addRow(new Object[] {name,contact,address,email,password,gender,hobbies});
+				
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+		return con;
+		
+
+	}
+}
